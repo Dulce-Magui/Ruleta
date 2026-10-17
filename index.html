@@ -141,6 +141,19 @@ input:focus, select:focus {
   border-color: var(--primary-pink);
 }
 
+.phone-group {
+  display: flex;
+  gap: 8px;
+}
+
+.phone-group input:first-child {
+  flex: 0 0 35%;
+}
+
+.phone-group input:last-child {
+  flex: 1;
+}
+
 .btn-primary {
   width: 100%;
   padding: 14px;
@@ -626,7 +639,7 @@ footer a {
 
 /* PANEL ADMIN */
 #admin-panel {
-  position: fixed; top: 0; right: 0; width: 420px; max-width: 95vw; height: 100vh;
+  position: fixed; top: 0; right: 0; width: 450px; max-width: 95vw; height: 100vh;
   background: white; box-shadow: -15px 0 50px rgba(0,0,0,0.25); padding: 20px;
   overflow-y: auto; z-index: 3000;
 }
@@ -652,7 +665,7 @@ footer a {
 .admin-btn.wa { background: #25D366; }
 .admin-btn.delete { background: #dc2626; flex-basis: 100%; margin-top: 2px; }
 
-.ruleta-users-list { max-height: 45vh; overflow-y: auto; background: white; border-radius: 8px; padding: 8px; border: 1px solid #e5e7eb; }
+.ruleta-users-list, .admin-spins-list { max-height: 35vh; overflow-y: auto; background: white; border-radius: 8px; padding: 8px; border: 1px solid #e5e7eb; }
 
 @media (max-width: 768px) {
   h1 { font-size: 1.8rem; }
@@ -668,7 +681,7 @@ footer a {
 <canvas id="luxury-canvas"></canvas>
 
 <header>
-  <div class="logo-container" id="admin-trigger" title="Hacé 5 clics para abrir administración">
+  <div class="logo-container" id="admin-trigger" title="Panel de Administración">
     <img src="logo.png" alt="Logo Dulce Magui" onerror="this.parentElement.innerText='DULCE MAGUI'">
   </div>
   <h1>🎡 Ruleta de Descuentos</h1>
@@ -687,12 +700,15 @@ footer a {
   <div id="ruleta-register" class="card hidden">
     <h3>🆕 Registrate (Gratis)</h3>
     <p class="help">
-      Ingresá tu nombre y WhatsApp (incluyendo código de área, ej: 541122334455). El sistema te dará un token único. 🎁
+      Ingresá tu nombre y número de celular (separando el código de área y tu número). 🎁
     </p>
 
     <form id="register-form">
       <input type="text" id="reg-name" placeholder="Tu nombre (ej: Daniel)" required maxlength="50">
-      <input type="tel" id="reg-phone" placeholder="Tu WhatsApp (ej: 541122334455)" required maxlength="20">
+      <div class="phone-group">
+        <input type="tel" id="reg-area" placeholder="Ej: 54" required maxlength="5" title="Código de área">
+        <input type="tel" id="reg-phone" placeholder="Celular (ej: 1122334455)" required maxlength="15" title="Número de celular">
+      </div>
       <button type="submit" class="btn-primary">✨ Obtener mi token</button>
     </form>
 
@@ -703,11 +719,11 @@ footer a {
   <div id="ruleta-login" class="card hidden">
     <h3>🔑 Ingresar a la Ruleta</h3>
     <p class="help">
-      Usá tu número + el token que guardaste.
+      Usá tu número de celular (sin código de área) + el token que guardaste.
     </p>
 
     <form id="login-form">
-      <input type="tel" id="login-phone" placeholder="Tu número de WhatsApp (ej: 541122334455)" required maxlength="20">
+      <input type="tel" id="login-phone" placeholder="Tu número de celular (ej: 1122334455)" required maxlength="20">
       <input type="text" id="login-token" placeholder="Tu token (ej: A7K2M9)" required maxlength="10" style="text-transform:uppercase;">
       <button type="submit" class="btn-primary">🎰 Entrar a girar</button>
     </form>
@@ -766,7 +782,10 @@ footer a {
     <h4>➕ Dar de Alta Manual</h4>
     <form id="admin-add-form" onsubmit="adminDarDeAlta(event)">
       <input type="text" id="adm-new-name" placeholder="Nombre del cliente" required style="margin-bottom:8px; padding:10px; font-size:14px;">
-      <input type="tel" id="adm-new-phone" placeholder="Teléfono con área (ej: 541122334455)" required style="margin-bottom:8px; padding:10px; font-size:14px;">
+      <div class="phone-group" style="margin-bottom:8px;">
+        <input type="tel" id="adm-new-area" placeholder="Área (ej: 54)" required style="padding:10px; font-size:14px;">
+        <input type="tel" id="adm-new-phone" placeholder="Celular (ej: 1122334455)" required style="padding:10px; font-size:14px;">
+      </div>
       <input type="text" id="adm-new-token" placeholder="Token (opcional, se autogenera)" style="margin-bottom:8px; padding:10px; font-size:14px; text-transform:uppercase;">
       <button type="submit" class="btn-primary" style="padding:10px; font-size:14px;">✨ Registrar y Habilitar</button>
     </form>
@@ -775,8 +794,13 @@ footer a {
 
   <div class="admin-section">
     <h4>👥 Usuarios Registrados (<span id="admin-ruleta-count">0</span>)</h4>
-    <input type="text" id="admin-search" placeholder="Buscar nombre, teléfono o token" oninput="renderAdminUsers()" style="margin-bottom:10px; padding:10px; font-size:14px;">
+    <input type="text" id="admin-search" placeholder="Buscar nombre, celular o token" oninput="renderAdminUsers()" style="margin-bottom:10px; padding:10px; font-size:14px;">
     <div class="ruleta-users-list" id="admin-ruleta-users">Cargando...</div>
+  </div>
+
+  <div class="admin-section">
+    <h4>📊 Historial de Tiros / Borrar Individuales (<span id="admin-spins-count">0</span>)</h4>
+    <div class="admin-spins-list" id="admin-spins-list">Cargando historial...</div>
   </div>
 </div>
 
@@ -854,7 +878,7 @@ function escapeHtml(str) {
     .replace(/'/g, '&#039;');
 }
 
-function cleanPhone(p) {
+function cleanInput(p) {
   return (p || '').replace(/\D/g, '').trim();
 }
 
@@ -887,10 +911,11 @@ function showRuletaView(view) {
   }
 }
 
-// ============ PANEL ADMIN (5 CLICS Y PASSWORD DM1234) ============
+// ============ PANEL ADMIN (5 CLICS Y CONTRASEÑA SECRETA) ============
 let logoTapCount = 0;
 let logoTapTimer = null;
 let allRuletaUsers = {};
+let allRuletaSpins = {};
 
 const logoTrigger = document.getElementById('admin-trigger');
 if (logoTrigger) {
@@ -900,8 +925,8 @@ if (logoTrigger) {
     logoTapTimer = setTimeout(() => { logoTapCount = 0; }, 2000);
     if (logoTapCount >= 5) {
       logoTapCount = 0;
-      const pass = prompt('🔐 Ingrese la contraseña de administración (DM1234):');
-      if (pass === 'DM1234') {
+      const pass = prompt('🔐 Ingrese su contraseña de administración:');
+      if (pass === 'DM1234') { // Contraseña secreta configurada
         toggleAdmin();
       } else if (pass !== null) {
         alert('❌ Contraseña incorrecta.');
@@ -919,6 +944,11 @@ db.ref('ruletaUsuarios').on('value', (snap) => {
   renderAdminUsers();
 });
 
+db.ref('ruletaSpins').on('value', (snap) => {
+  allRuletaSpins = snap.val() || {};
+  renderAdminSpins();
+});
+
 async function habilitarUsuario(phone) {
   try {
     await db.ref('ruletaUsuarios/' + phone).update({ bloqueado: false });
@@ -932,28 +962,40 @@ async function deshabilitarUsuario(phone) {
 }
 
 async function eliminarUsuario(phone) {
-  if (!confirm('⚠️ ¿Estás seguro de eliminar permanentemente al usuario ' + phone + '?')) return;
+  if (!confirm('⚠️ ¿Estás seguro de eliminar permanentemente al celular ' + phone + '?')) return;
   try {
     await db.ref('ruletaUsuarios/' + phone).remove();
   } catch (e) { alert('❌ Error al eliminar: ' + e.message); }
 }
 
+async function eliminarTiro(spinKey) {
+  if (!confirm('⚠️ ¿Estás seguro de eliminar este registro de tiro de la ruleta?')) return;
+  try {
+    await db.ref('ruletaSpins/' + spinKey).remove();
+  } catch (e) { alert('❌ Error al eliminar el tiro: ' + e.message); }
+}
+
 async function adminDarDeAlta(e) {
   e.preventDefault();
   const name = document.getElementById('adm-new-name').value.trim();
-  const phone = cleanPhone(document.getElementById('adm-new-phone').value);
+  const area = cleanInput(document.getElementById('adm-new-area').value);
+  const phone = cleanInput(document.getElementById('adm-new-phone').value);
   let token = document.getElementById('adm-new-token').value.trim().toUpperCase();
 
-  if (phone.length < 10 || name.length < 2) {
-    showMsg('adm-add-msg', '❌ Verificá el nombre y teléfono (ej con área: 541122334455).', 'error');
+  if (phone.length < 6 || area.length < 1 || name.length < 2) {
+    showMsg('adm-add-msg', '❌ Verificá el nombre, código de área y celular.', 'error');
     return;
   }
+
+  const fullPhone = area + phone;
 
   if (!token) token = generateToken();
 
   try {
     await db.ref('ruletaUsuarios/' + phone).set({
+      area: area,
       phone: phone,
+      fullPhone: fullPhone,
       token: token,
       name: name,
       registrado: Date.now(),
@@ -972,16 +1014,17 @@ function enviarTokenWAAdmin(phone) {
   const d = allRuletaUsers[phone];
   if (!d || !d.token) return;
   
+  const targetWhatsApp = (d.fullPhone || ('54' + phone));
   const msg = encodeURIComponent(
     '🎡 ¡Hola ' + (d.name || 'cliente') + '! ✨\n\n' +
     'Tu token de acceso a la Ruleta de Descuentos es:\n\n' +
     '🔑 *' + d.token + '*\n\n' +
-    'Ingresá con tu número ' + phone + ' y ese token en nuestra web.\n' +
+    'Ingresá con tu celular ' + phone + ' y ese token en nuestra web.\n' +
     '¡Tu acceso ya está habilitado para jugar! 🎰\n' +
     'Recordá: 1 giro por semana 🎁'
   );
   
-  window.open('https://wa.me/' + phone + '?text=' + msg, '_blank', 'noopener,noreferrer');
+  window.open('https://wa.me/' + targetWhatsApp + '?text=' + msg, '_blank', 'noopener,noreferrer');
 }
 
 function renderAdminUsers() {
@@ -994,7 +1037,7 @@ function renderAdminUsers() {
   let entries = Object.entries(allRuletaUsers);
 
   if (q) {
-    entries = entries.filter(([phone, d]) => phone.toLowerCase().includes(q) || (d.name || '').toLowerCase().includes(q) || (d.token || '').toLowerCase().includes(q));
+    entries = entries.filter(([phone, d]) => phone.toLowerCase().includes(q) || (d.name || '').toLowerCase().includes(q) || (d.token || '').toLowerCase().includes(q) || (d.area || '').toLowerCase().includes(q));
   }
 
   entries.sort((a, b) => {
@@ -1017,6 +1060,8 @@ function renderAdminUsers() {
       ? `<button class="admin-btn enable" onclick="habilitarUsuario('${phone}')">✅ Habilitar</button>`
       : `<button class="admin-btn warn" onclick="deshabilitarUsuario('${phone}')">⛔ Bloquear</button>`;
 
+    const areaStr = data.area ? ('+' + data.area + ' ') : '';
+
     return `
       <div class="admin-item">
         <div style="display:flex; justify-content:space-between; width:100%;">
@@ -1024,13 +1069,48 @@ function renderAdminUsers() {
           ${statusHtml}
         </div>
         <div style="font-size:0.83rem; color:#555; width:100%;">
-          📱 ${escapeHtml(phone)}<br>
+          📱 ${areaStr}${escapeHtml(phone)}<br>
           🔑 <code style="background:#f3f4f6; padding:2px 6px; border-radius:4px; font-weight:bold;">${escapeHtml(data.token || '—')}</code>
         </div>
         <div class="admin-item-actions">
           ${btnToggle}
           <button class="admin-btn wa" onclick="enviarTokenWAAdmin('${phone}')">📱 WhatsApp</button>
           <button class="admin-btn delete" onclick="eliminarUsuario('${phone}')">🗑️ Eliminar Usuario</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderAdminSpins() {
+  const cont = document.getElementById('admin-spins-list');
+  const countEl = document.getElementById('admin-spins-count');
+  if (!cont || !countEl) return;
+
+  let entries = Object.entries(allRuletaSpins);
+  entries.sort((a, b) => (b[1].timestamp || 0) - (a[1].timestamp || 0));
+
+  countEl.textContent = entries.length;
+  if (!entries.length) {
+    cont.innerHTML = '<p style="color:#666;font-size:13px;text-align:center;padding:10px;">Sin tiros registrados.</p>';
+    return;
+  }
+
+  cont.innerHTML = entries.map(([key, s]) => {
+    const time = new Date(s.timestamp || Date.now());
+    const fechaStr = time.toLocaleDateString() + ' ' + String(time.getHours()).padStart(2, '0') + ':' + String(time.getMinutes()).padStart(2, '0');
+
+    return `
+      <div class="admin-item" style="border-left-color: #fbbf24;">
+        <div style="display:flex; justify-content:space-between; width:100%;">
+          <strong style="color:#92400e;">🎁 ${escapeHtml(s.prize || '')}</strong>
+          <span style="font-size:0.75rem; color:#666;">${fechaStr}</span>
+        </div>
+        <div style="font-size:0.83rem; color:#555;">
+          👤 ${escapeHtml(s.name || 'Anónimo')} (Cel: ${escapeHtml(s.phone || '')})
+        </div>
+        <div class="admin-item-actions">
+          <button class="admin-btn delete" onclick="eliminarTiro('${key}')">🗑️ Borrar este registro</button>
         </div>
       </div>
     `;
@@ -1104,10 +1184,11 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
   e.preventDefault();
 
   const name = document.getElementById('reg-name').value.trim();
-  const phone = cleanPhone(document.getElementById('reg-phone').value);
+  const area = cleanInput(document.getElementById('reg-area').value);
+  const phone = cleanInput(document.getElementById('reg-phone').value);
 
-  if (phone.length < 10) {
-    showMsg('register-msg', '❌ Ingresá tu número completo con código de área (ej: 541122334455).', 'error');
+  if (phone.length < 6 || area.length < 1) {
+    showMsg('register-msg', '❌ Ingresá un código de área y número de celular válidos.', 'error');
     return;
   }
 
@@ -1116,6 +1197,7 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
     return;
   }
 
+  const fullPhone = area + phone;
   const userRef = db.ref('ruletaUsuarios/' + phone);
   const snap = await userRef.once('value');
 
@@ -1134,7 +1216,7 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
       '<div class="success">✅ ¡Ya estabas registrado, ' + safeName + '!<br><small>Tu token es:</small>' +
       '<div class="token-display"><div class="label">Tu Token</div><div class="token-value">' + safeToken + '</div></div>' +
       '<button class="btn-primary btn-copy" onclick="copiarToken(\'' + safeToken + '\')">📋 Copiar token</button>' +
-      '<button class="btn-primary btn-wa" onclick="enviarTokenWA(\'' + phone + '\',\'' + safeToken + '\',\'' + safeName + '\')">📱 Guardar en mi WhatsApp</button></div>',
+      '<button class="btn-primary btn-wa" onclick="enviarTokenWA(\'' + fullPhone + '\',\'' + safeToken + '\',\'' + safeName + '\')">📱 Guardar en mi WhatsApp</button></div>',
       'success'
     );
     return;
@@ -1151,7 +1233,9 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
 
   try {
     await userRef.set({
+      area: area,
       phone: phone,
+      fullPhone: fullPhone,
       token: token,
       name: name,
       registrado: Date.now(),
@@ -1166,7 +1250,7 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
       '<div class="success">🎉 <strong>¡Bienvenido ' + safeName + '!</strong><br><small>Guardá tu token, es permanente:</small>' +
       '<div class="token-display"><div class="label">Tu Token Personal</div><div class="token-value">' + safeToken + '</div></div>' +
       '<button class="btn-primary btn-copy" onclick="copiarToken(\'' + safeToken + '\')">📋 Copiar token</button>' +
-      '<button class="btn-primary btn-wa" onclick="enviarTokenWA(\'' + phone + '\',\'' + safeToken + '\',\'' + safeName + '\')">📱 Enviármelo a mi WhatsApp</button>' +
+      '<button class="btn-primary btn-wa" onclick="enviarTokenWA(\'' + fullPhone + '\',\'' + safeToken + '\',\'' + safeName + '\')">📱 Enviármelo a mi WhatsApp</button>' +
       '<p style="margin-top:15px;font-size:13px;">👇 Después tocá "Ya tengo token" para entrar a girar</p></div>',
       'success'
     );
@@ -1181,26 +1265,25 @@ function copiarToken(token) {
     .catch(() => prompt('Copiá este token:', token));
 }
 
-function enviarTokenWA(phone, token, name) {
+function enviarTokenWA(fullPhone, token, name) {
   const msg = encodeURIComponent(
     '🎡 *MI TOKEN DE LA RULETA* 🎡\n' +
     '👤 Nombre: ' + name + '\n' +
     '🔑 Token: *' + token + '*\n' +
-    '📱 Mi número: ' + phone + '\n' +
     '_Lo guardo para usarlo cada vez que quiera tirar (1 tiro por semana)_ 🎰'
   );
 
-  window.open('https://wa.me/' + phone + '?text=' + msg, '_blank', 'noopener,noreferrer');
+  window.open('https://wa.me/' + fullPhone + '?text=' + msg, '_blank', 'noopener,noreferrer');
 }
 
 document.getElementById('login-form').addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  const phone = cleanPhone(document.getElementById('login-phone').value);
+  const phone = cleanInput(document.getElementById('login-phone').value);
   const token = document.getElementById('login-token').value.trim().toUpperCase();
 
-  if (phone.length < 10) {
-    showMsg('login-msg', '❌ Ingresá tu número con código de área (ej: 541122334455).', 'error');
+  if (phone.length < 6) {
+    showMsg('login-msg', '❌ Ingresá tu número de celular.', 'error');
     return;
   }
 
@@ -1208,7 +1291,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
   const snap = await userRef.once('value');
 
   if (!snap.exists()) {
-    showMsg('login-msg', '❌ Número no registrado. Tocá "Soy nuevo" primero.', 'error');
+    showMsg('login-msg', '❌ Celular no registrado. Tocá "Soy nuevo" primero.', 'error');
     return;
   }
 
