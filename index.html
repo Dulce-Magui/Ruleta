@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <meta property="og:title" content="🎡 Ruleta de Descuentos" />
-<meta property="og:description" content="Registrate gratis con tu teléfono y girá 1 vez por semana para ganar descuentos." />
+<meta property="og:description" content="Registrate gratis con tu WhatsApp y probá tu suerte para ganar descuentos." />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Dulce Magui" />
 <meta property="og:locale" content="es_AR" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="🎡 Ruleta de Descuentos" />
-<meta name="twitter:description" content="Registrate gratis y girá 1 vez por semana." />
-<meta name="description" content="Ruleta de Descuentos. Registrate gratis con tu teléfono y girá 1 vez por semana." />
+<meta name="twitter:description" content="Registrate gratis y probá tu suerte." />
+<meta name="description" content="Ruleta de Descuentos. Registrate con tu WhatsApp y probá tu suerte." />
 <meta name="theme-color" content="#ec4899" />
 
 <title>🎡 Ruleta de Descuentos</title>
@@ -90,9 +90,9 @@ h1 {
 
 .subtitle {
   color: var(--subtitle-color);
-  font-size: 1rem;
+  font-size: 1.05rem;
   margin-bottom: 15px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .ruleta-section {
@@ -685,7 +685,7 @@ footer a {
     <img src="logo.png" alt="Logo Dulce Magui" onerror="this.parentElement.innerText='DULCE MAGUI'">
   </div>
   <h1>🎡 Ruleta de Descuentos</h1>
-  <p class="subtitle">REGISTRATE GRATIS con tu teléfono para tirar 1 vez por semana 🎁</p>
+  <p class="subtitle">¡Registrate con tu WhatsApp Gratis y probá tu suerte! 🎁</p>
 </header>
 
 <section class="ruleta-section" id="ruleta">
@@ -698,15 +698,15 @@ footer a {
   </div>
 
   <div id="ruleta-register" class="card hidden">
-    <h3>🆕 Registrate (Gratis)</h3>
+    <h3>🆕 Registrate Gratis</h3>
     <p class="help">
-      Ingresá tu nombre y número de celular (separando el código de área y tu número). 🎁
+      Ingresá tu nombre y WhatsApp. Quedarás registrado y te avisaremos por WhatsApp cuando tu acceso esté habilitado 📱✨
     </p>
 
     <form id="register-form">
       <input type="text" id="reg-name" placeholder="Tu nombre (ej: Daniel)" required maxlength="50">
       <div class="phone-group">
-        <input type="tel" id="reg-area" placeholder="Ej: 54" required maxlength="5" title="Código de área">
+        <input type="tel" id="reg-area" placeholder="Área (ej: 54)" required maxlength="5" title="Código de área">
         <input type="tel" id="reg-phone" placeholder="Celular (ej: 1122334455)" required maxlength="15" title="Número de celular">
       </div>
       <button type="submit" class="btn-primary">✨ Obtener mi token</button>
@@ -719,11 +719,11 @@ footer a {
   <div id="ruleta-login" class="card hidden">
     <h3>🔑 Ingresar a la Ruleta</h3>
     <p class="help">
-      Usá tu número de celular (sin código de área) + el token que guardaste.
+      Usá tu número de celular (sin código de área) + tu token personal.
     </p>
 
     <form id="login-form">
-      <input type="tel" id="login-phone" placeholder="Tu número de celular (ej: 1122334455)" required maxlength="20">
+      <input type="tel" id="login-phone" placeholder="Tu celular (ej: 1122334455)" required maxlength="20">
       <input type="text" id="login-token" placeholder="Tu token (ej: A7K2M9)" required maxlength="10" style="text-transform:uppercase;">
       <button type="submit" class="btn-primary">🎰 Entrar a girar</button>
     </form>
@@ -926,7 +926,7 @@ if (logoTrigger) {
     if (logoTapCount >= 5) {
       logoTapCount = 0;
       const pass = prompt('🔐 Ingrese su contraseña de administración:');
-      if (pass === 'DM1234') { // Contraseña secreta configurada
+      if (pass === 'DM1234') {
         toggleAdmin();
       } else if (pass !== null) {
         alert('❌ Contraseña incorrecta.');
@@ -1044,7 +1044,7 @@ function renderAdminUsers() {
     const aBlocked = a[1].bloqueado !== false ? 1 : 0;
     const bBlocked = b[1].bloqueado !== false ? 1 : 0;
     if (aBlocked !== bBlocked) return aBlocked - bBlocked;
-    return (b[1].registrado || 0) - (a[1].registrado || 0);
+    return (b[1].registrado || 0) - (b[1].registrado || 0);
   });
 
   countEl.textContent = entries.length;
@@ -1205,7 +1205,7 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
     const data = snap.val();
 
     if (data.bloqueado) {
-      showMsg('register-msg', '⛔ Número bloqueado o pendiente.', 'error');
+      showMsg('register-msg', '⏳ Tu registro está pendiente de habilitación. Te avisaremos por WhatsApp.', 'success');
       return;
     }
 
@@ -1240,18 +1240,16 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
       name: name,
       registrado: Date.now(),
       lastSpin: null,
-      bloqueado: false
+      bloqueado: true // Queda pendiente hasta que admin lo habilite
     });
 
     const safeName = escapeHtml(name);
     const safeToken = escapeHtml(token);
 
     showMsg('register-msg',
-      '<div class="success">🎉 <strong>¡Bienvenido ' + safeName + '!</strong><br><small>Guardá tu token, es permanente:</small>' +
+      '<div class="success">🎉 <strong>¡Solicitud enviada, ' + safeName + '!</strong><br><small>Tu token asignado es:</small>' +
       '<div class="token-display"><div class="label">Tu Token Personal</div><div class="token-value">' + safeToken + '</div></div>' +
-      '<button class="btn-primary btn-copy" onclick="copiarToken(\'' + safeToken + '\')">📋 Copiar token</button>' +
-      '<button class="btn-primary btn-wa" onclick="enviarTokenWA(\'' + fullPhone + '\',\'' + safeToken + '\',\'' + safeName + '\')">📱 Enviármelo a mi WhatsApp</button>' +
-      '<p style="margin-top:15px;font-size:13px;">👇 Después tocá "Ya tengo token" para entrar a girar</p></div>',
+      '<p style="margin-top:10px;font-size:13px;color:#155724;">⏳ Quedaste pendiente de habilitación. <b>Te avisaremos por WhatsApp</b> cuando puedas girar 🎡</p></div>',
       'success'
     );
   } catch (err) {
@@ -1298,7 +1296,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
   const data = snap.val();
 
   if (data.bloqueado) {
-    showMsg('login-msg', '⛔ Usuario bloqueado o pendiente.', 'error');
+    showMsg('login-msg', '⏳ Tu cuenta aún está pendiente de habilitación por administración.', 'error');
     return;
   }
 
