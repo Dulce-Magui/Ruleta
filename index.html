@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <meta property="og:title" content=" Ruleta de Descuentos | Dulce Magui" />
-<meta property="og:description" content="Ingresá con tu token y girá 1 vez por semana para ganar increíbles descuentos." />
+<meta property="og:description" content="Ingres&aacute; con tu token y gir&aacute; 1 vez por semana para ganar incre&iacute;bles descuentos." />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Dulce Magui" />
 <meta property="og:locale" content="es_AR" />
 <meta name="theme-color" content="#9d174d" />
 
-<title>Ruleta de Descuentos — Dulce Magui</title>
+<title>Ruleta de Descuentos &mdash; Dulce Magui</title>
 
-<!-- Google Fonts de alta gama -->
+<!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -47,7 +47,6 @@ body {
   position: relative; overflow-x: hidden;
 }
 
-/* Canvas para partículas de fondo elegantes y sutiles */
 #luxury-canvas {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
@@ -230,7 +229,6 @@ input:focus, select:focus {
 footer { text-align: center; color: var(--text-muted); font-size: 13px; margin-top: 10px; position: relative; z-index: 1; font-weight: 500; }
 footer a { color: var(--primary-dark); font-weight: 700; text-decoration: none; }
 
-/* PANEL ADMIN ESTILIZADO */
 #admin-panel {
   position: fixed; top: 0; right: 0; width: 420px; max-width: 95vw; height: 100vh;
   background: var(--surface-solid); box-shadow: -15px 0 50px rgba(0,0,0,0.2); padding: 24px;
@@ -264,7 +262,6 @@ footer a { color: var(--primary-dark); font-weight: 700; text-decoration: none; 
 
 .ruleta-users-list { max-height: 42vh; overflow-y: auto; background: #ffffff; border-radius: 10px; padding: 6px; border: 1px solid var(--border-color); }
 
-/* POPUP PREMIO ELEGANTE */
 .result-popup {
   position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(39, 28, 33, 0.8);
   backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
@@ -296,15 +293,14 @@ footer a { color: var(--primary-dark); font-weight: 700; text-decoration: none; 
 
 <body>
 
-<!-- Lienzo para destellos y partículas sutiles de fondo -->
 <canvas id="luxury-canvas"></canvas>
 
 <header>
-  <div class="logo-container" id="admin-trigger" title="Panel de Administración (5 clics)">
+  <div class="logo-container" id="admin-trigger" title="Panel de Administraci&oacute;n (5 clics)">
     <img src="logo.png" alt="Dulce Magui Logo" onerror="this.parentElement.innerText='DULCE MAGUI'">
   </div>
   <h1>Ruleta de Descuentos</h1>
-  <p class="subtitle">Ingresá con tu token y girá 1 vez por semana </p>
+  <p class="subtitle">Ingres&aacute; con tu token y gir&aacute; 1 vez por semana </p>
 </header>
 
 <section class="ruleta-section" id="ruleta">
@@ -319,9 +315,9 @@ footer a { color: var(--primary-dark); font-weight: 700; text-decoration: none; 
   <!-- VISTA: LOGIN CON TOKEN -->
   <div id="ruleta-login" class="card">
     <h3>Ingresar al Sorteo</h3>
-    <p class="help">Usá tu número completo con código de área (ej: <b>541122334455</b>) y el token recibido.</p>
+    <p class="help">Us&aacute; tu n&uacute;mero completo con c&oacute;digo de &aacute;rea (ej: <b>541122334455</b>) y el token recibido.</p>
     <form id="login-form">
-      <input type="tel" id="login-phone" placeholder="Ej: 541122334455 (sin el símbolo +)" required maxlength="20">
+      <input type="tel" id="login-phone" placeholder="Ej: 541122334455 (sin el s&iacute;mbolo +)" required maxlength="20">
       <input type="text" id="login-token" placeholder="Tu Token (ej: A7K2M9)" required maxlength="10" style="text-transform:uppercase;">
       <button type="submit" class="btn-primary"> Entrar a Girar</button>
     </form>
@@ -332,13 +328,13 @@ footer a { color: var(--primary-dark); font-weight: 700; text-decoration: none; 
   <!-- VISTA: SOLICITAR TOKEN -->
   <div id="ruleta-request" class="card hidden">
     <h3>Solicitar Token</h3>
-    <p class="help">Ingresá tu código de área (ej: <b>54</b>) y número (ej: <b>1122334455</b>) para generar tu acceso de forma automática.</p>
+    <p class="help">Ingres&aacute; tu c&oacute;digo de &aacute;rea (ej: <b>54</b>) y n&uacute;mero (ej: <b>1122334455</b>) para generar tu acceso de forma autom&aacute;tica.</p>
     <form id="register-form">
       <input type="text" id="reg-name" placeholder="Tu Nombre Completo" required maxlength="50">
-      <input type="tel" id="reg-phone" placeholder="Ej: 541122334455 (Área + Número)" required maxlength="20">
+      <input type="tel" id="reg-phone" placeholder="Ej: 541122334455 (&Aacute;rea + N&uacute;mero)" required maxlength="20">
       <button type="submit" class="btn-primary btn-wa"> Solicitar mi Token</button>
     </form>
-    <button class="btn-secondary" onclick="showRuletaView('login')"> Volver al ingreso</button>
+    <button class="btn-secondary" onclick="showRuletaView('login')">&larr; Volver al ingreso</button>
     <div id="register-msg" class="hidden"></div>
   </div>
 
@@ -348,7 +344,7 @@ footer a { color: var(--primary-dark); font-weight: 700; text-decoration: none; 
       <span>Bienvenido/a, <span class="user-name" id="user-greeting"></span> </span>
     </div>
     <div class="wheel-container">
-      <div class="pointer" id="pointer"></div>
+      <div class="pointer" id="pointer">&#9660;</div>
       <div class="wheel-outer">
         <div class="wheel" id="wheel"></div>
         <div class="wheel-center"></div>
@@ -357,14 +353,14 @@ footer a { color: var(--primary-dark); font-weight: 700; text-decoration: none; 
     </div>
     <div class="spinning-text" id="spinning-text"> GIRANDO... </div>
     <button id="spin-btn" class="btn-primary btn-spin"> ¡GIRAR AHORA!</button>
-    <button class="btn-secondary" onclick="logoutRuleta()"> Cerrar Sesión</button>
+    <button class="btn-secondary" onclick="logoutRuleta()"> Cerrar Sesi&oacute;n</button>
   </div>
 </section>
 
 <!-- SECCIÓN: ÚLTIMOS GANADORES -->
 <section class="results-section">
   <div class="results-board">
-    <h3> Últimos Ganadores</h3>
+    <h3> &Uacute;ltimos Ganadores</h3>
     <div class="results-list" id="results-list">
       <p style="color:#fbcfe8;text-align:center;font-size:13.5px;">Cargando actividad reciente...</p>
     </div>
@@ -372,41 +368,37 @@ footer a { color: var(--primary-dark); font-weight: 700; text-decoration: none; 
 </section>
 
 <footer>
-  <p>Consultas y Pedidos: <a href="https://wa.me/541168911377" target="_blank" rel="noopener noreferrer">WhatsApp Dulce Magui</a>[span_5](start_span)[span_5](end_span)</p>
+  <p>Consultas y Pedidos: <a href="https://wa.me/541168911377" target="_blank" rel="noopener noreferrer">WhatsApp Dulce Magui</a>[span_2](start_span)[span_2](end_span)</p>
   <p style="margin-top:4px; opacity:0.8;">Habilitado 1 giro semanal por cliente</p>
 </footer>
 
 <!-- PANEL DE ADMINISTRACIÓN -->
 <div id="admin-panel" class="hidden">
-  <button class="close-btn" onclick="toggleAdmin()"> Cerrar</button>
+  <button class="close-btn" onclick="toggleAdmin()">&#10006; Cerrar</button>
   <h3>Panel de Control Admin</h3>
 
-  <!-- Alta Manual -->
   <div class="admin-section">
     <h4>Alta Manual de Usuario</h4>
     <form id="admin-add-form" onsubmit="adminDarDeAlta(event)">
       <input type="text" id="adm-new-name" placeholder="Nombre del cliente" required style="margin-bottom:8px; padding:10px; font-size:13.5px;">
-      <input type="tel" id="adm-new-phone" placeholder="Teléfono con área (ej: 541122334455)" required style="margin-bottom:8px; padding:10px; font-size:13.5px;">
+      <input type="tel" id="adm-new-phone" placeholder="Tel&eacute;fono con &aacute;rea (ej: 541122334455)" required style="margin-bottom:8px; padding:10px; font-size:13.5px;">
       <input type="text" id="adm-new-token" placeholder="Token (opcional, autogenerado si se deja en blanco)" style="margin-bottom:8px; padding:10px; font-size:13.5px; text-transform:uppercase;">
       <button type="submit" class="btn-primary" style="padding:10px; font-size:13.5px;"> Registrar y Habilitar</button>
     </form>
     <div id="adm-add-msg" class="hidden"></div>
   </div>
 
-  <!-- Listado y Gestión de Usuarios -->
   <div class="admin-section">
     <h4>Usuarios Registrados (<span id="admin-ruleta-count">0</span>)</h4>
-    <input type="text" id="admin-search" placeholder="Filtrar por nombre, teléfono o token" oninput="renderAdminUsers()" style="margin-bottom:10px; padding:10px; font-size:13.5px;">
+    <input type="text" id="admin-search" placeholder="Filtrar por nombre, tel&eacute;fono o token" oninput="renderAdminUsers()" style="margin-bottom:10px; padding:10px; font-size:13.5px;">
     <div class="ruleta-users-list" id="admin-ruleta-users">Cargando registros...</div>
   </div>
 </div>
 
-<!-- SDKs de Firebase Compatibles -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
-// ==== SCRIPT: FONDO DINÁMICO DE LUJO (PARTÍCULAS) ====
 const canvas = document.getElementById('luxury-canvas');
 const ctx = canvas.getContext('2d');
 let particles = [];
@@ -452,7 +444,6 @@ function animateCanvas() {
 }
 animateCanvas();
 
-// ==== CONFIGURACIÓN DE FIREBASE ====[span_6](start_span)[span_6](end_span)[span_7](start_span)[span_7](end_span)
 const firebaseConfig = {
   apiKey: "AIzaSyBAaisU4YkdXcMqazDyK2fx6luazM",
   authDomain: "sorteo-01.firebaseapp.com",
@@ -467,7 +458,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// ==== UTILIDADES DE SEGURIDAD Y FORMATO ====
 function escapeHtml(str) {
   if (!str) return '';
   return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
@@ -502,13 +492,12 @@ function showRuletaView(view) {
   if (view === 'request') document.getElementById('tab-request')?.classList.add('active');
 }
 
-// ==== DEFINICIÓN DE PREMIOS Y PROBABILIDADES ====
 const PRIZES = [
   { label: "5% OFF",    emoji: "", discount: "5%",      prob: 0.35,  color: "#e11d48" },
   { label: "10% OFF",   emoji: "", discount: "10%",     prob: 0.35,  color: "#0d9488" },
   { label: "15% OFF",   emoji: "", discount: "15%",     prob: 0.10,  color: "#0284c7" },
   { label: "2 SHOTS",   emoji: "", discount: "2SHOTS",  prob: 0.10,  color: "#7c3aed", condicional: true },
-  { label: "1 PORCIÓN", emoji: "", discount: "PORCION", prob: 0.06,  color: "#db2777", condicional: true },
+  { label: "1 PORCI&Oacute;N", emoji: "", discount: "PORCION", prob: 0.06,  color: "#db2777", condicional: true },
   { label: "20% OFF",   emoji: "", discount: "20%",     prob: 0.015, color: "#059669" },
   { label: "25% OFF",   emoji: "", discount: "25%",     prob: 0.015, color: "#ea580c" },
   { label: "50% OFF",   emoji: "", discount: "50%",     prob: 0.01,  color: "#d97706" }
@@ -529,7 +518,6 @@ function generateToken() {
   return t;
 }
 
-// Sincronización en tiempo real de últimos ganadores[span_8](start_span)[span_8](end_span)
 db.ref('ruletaSpins').orderByChild('timestamp').limitToLast(10).on('value', (snap) => {
   const spins = [];
   snap.forEach(child => spins.push(child.val()));
@@ -538,7 +526,7 @@ db.ref('ruletaSpins').orderByChild('timestamp').limitToLast(10).on('value', (sna
   const list = document.getElementById('results-list');
   if (!list) return;
   if (!spins.length) {
-    list.innerHTML = '<p style="color:#fbcfe8;text-align:center;font-size:13.5px;">Todavía nadie giró... ¡Sé el primero!</p>';
+    list.innerHTML = '<p style="color:#fbcfe8;text-align:center;font-size:13.5px;">Todav&iacute;a nadie gir&oacute;... &iexcl;S&eacute; el primero!</p>';
     return;
   }
   list.innerHTML = spins.map((s, i) => {
@@ -551,14 +539,13 @@ db.ref('ruletaSpins').orderByChild('timestamp').limitToLast(10).on('value', (sna
   }).join('');
 });
 
-// ==== REGISTRO AUTOMÁTICO DE USUARIOS ====[span_9](start_span)[span_9](end_span)
 document.getElementById('register-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const name = document.getElementById('reg-name').value.trim();
   const phone = cleanPhone(document.getElementById('reg-phone').value);
 
-  if (phone.length < 10) { showMsg('register-msg', ' Ingresá el número completo con código de área (ej: 541122334455).', 'error'); return; }
-  if (name.length < 2) { showMsg('register-msg', ' Ingresá tu nombre.', 'error'); return; }
+  if (phone.length < 10) { showMsg('register-msg', '&#10060; Ingres&aacute; el n&uacute;mero completo con c&oacute;digo de &aacute;rea (ej: 541122334455).', 'error'); return; }
+  if (name.length < 2) { showMsg('register-msg', '&#10060; Ingres&aacute; tu nombre.', 'error'); return; }
 
   const userRef = db.ref('ruletaUsuarios/' + phone);
   const snap = await userRef.once('value');
@@ -567,12 +554,12 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
     const data = snap.val();
     if (!data.bloqueado) {
       showMsg('register-msg',
-        '<div class="success"> ¡Ya estabas registrado y habilitado!<br><small>Tu token es:</small>' +
+        '<div class="success">&check; &iexcl;Ya estabas registrado y habilitado!<br><small>Tu token es:</small>' +
         '<div style="background:#fffbeb;border:2px dashed #d97706;border-radius:12px;padding:12px;margin:10px 0;font-size:1.5rem;font-weight:800;color:#92400e;font-family:monospace;letter-spacing:2px;">' + escapeHtml(data.token) + '</div>' +
         '<button class="btn-primary" onclick="showRuletaView(\'login\')"> Ir a girar</button></div>', 'success');
     } else {
       showMsg('register-msg',
-        '<div class="success"> Tu solicitud ya fue registrada.<br>Te avisaremos por WhatsApp cuando tu token sea habilitado.</div>', 'success');
+        '<div class="success">&para; Tu solicitud ya fue registrada.<br>Te avisaremos por WhatsApp cuando tu token sea habilitado.</div>', 'success');
     }
     return;
   }
@@ -596,32 +583,31 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
     });
     
     showMsg('register-msg',
-      '<div class="success"> ¡Solicitud enviada con éxito!<br>Te contactaremos por WhatsApp en cuanto tu token esté activo. </div>', 'success');
+      '<div class="success">&check; &iexcl;Solicitud enviada con &eacute;xito!<br>Te contactaremos por WhatsApp en cuanto tu token est&eacute; activo. </div>', 'success');
       
   } catch (err) {
-    showMsg('register-msg', ' Error: ' + escapeHtml(err.message), 'error');
+    showMsg('register-msg', '&#10060; Error: ' + escapeHtml(err.message), 'error');
   }
 });
 
-// ==== INICIO DE SESIÓN CON TOKEN ====[span_10](start_span)[span_10](end_span)
 document.getElementById('login-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const phone = cleanPhone(document.getElementById('login-phone').value);
   const token = document.getElementById('login-token').value.trim().toUpperCase();
 
-  if (phone.length < 10) { showMsg('login-msg', ' Ingresá tu número completo con área (ej: 541122334455).', 'error'); return; }
+  if (phone.length < 10) { showMsg('login-msg', '&#10060; Ingres&aacute; tu n&uacute;mero completo con &aacute;rea (ej: 541122334455).', 'error'); return; }
 
   const userRef = db.ref('ruletaUsuarios/' + phone);
   const snap = await userRef.once('value');
 
   if (!snap.exists()) {
-    showMsg('login-msg', ' Número no registrado. Solicitá tu token primero.', 'error'); return;
+    showMsg('login-msg', '&#10060; N&uacute;mero no registrado. Solicit&aacute; tu token primero.', 'error'); return;
   }
 
   const data = snap.val();
-  if (data.token !== token) { showMsg('login-msg', ' Token incorrecto.', 'error'); return; }
+  if (data.token !== token) { showMsg('login-msg', '&#10060; Token incorrecto.', 'error'); return; }
   if (data.bloqueado) { 
-    showMsg('login-msg', ' Tu token todavía no fue habilitado por administración.', 'error'); 
+    showMsg('login-msg', ' Tu token todav&iacute;a no fue habilitado por administraci&oacute;n.', 'error'); 
     return; 
   }
 
@@ -631,7 +617,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
       const remaining = COOLDOWN_MS - elapsed;
       const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
       const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      let msg = ' Ya utilizaste tu giro semanal. Volvé en ';
+      let msg = ' Ya utilizaste tu giro semanal. Volv&eacute; en ';
       if (days > 0) msg += days + 'd ';
       msg += hours + 'h';
       showMsg('login-msg', msg, 'error'); return;
@@ -720,7 +706,6 @@ function animateLights(active) {
   }
 }
 
-// ==== MECÁNICA DE GIRO Y ANIMACIÓN ====
 document.getElementById('spin-btn').addEventListener('click', async () => {
   if (spinning || !canSpin || !currentPhone) return;
   spinning = true;
@@ -762,7 +747,7 @@ document.getElementById('spin-btn').addEventListener('click', async () => {
     let codigo = prize.discount === '2SHOTS' ? currentPhone.slice(-4) + '-2SH' : (prize.discount === 'PORCION' ? currentPhone.slice(-4) + '-1P' : currentPhone.slice(-4) + '-' + (prize.discount.replace(/\D/g, '') || 'SHOT'));
 
     showResultPopup(currentName, prize, hh, mm, codigo);
-    canSpin = false; spinBtn.textContent = "Volvé la próxima semana ";
+    canSpin = false; spinBtn.textContent = "Volv\u00E9 la pr\u00F3xima semana ";
   } catch (e) {
     alert(' ' + (e.message || 'Error al procesar tu premio.'));
     logoutRuleta();
@@ -773,7 +758,7 @@ document.getElementById('spin-btn').addEventListener('click', async () => {
 function showResultPopup(name, prize, hh, mm, codigo) {
   const popup = document.createElement('div');
   popup.className = 'result-popup';
-  const condicionHTML = prize.condicional ? '<p style="font-size:12px;color:#78350f;margin-bottom:12px;background:#fffbeb;padding:8px;border-radius:8px;border:1px dashed #d97706;"> Válido en compras superiores a $10.000</p>' : '';
+  const condicionHTML = prize.condicional ? '<p style="font-size:12px;color:#78350f;margin-bottom:12px;background:#fffbeb;padding:8px;border-radius:8px;border:1px dashed #d97706;"> V&aacute;lido en compras superiores a $10.000</p>' : '';
   const safeName = escapeHtml(name), safeLabel = escapeHtml(prize.label), safeCodigo = escapeHtml(codigo);
 
   popup.innerHTML = '<div class="result-popup-content">' +
@@ -783,13 +768,12 @@ function showResultPopup(name, prize, hh, mm, codigo) {
     '<div class="prize-won">' + prize.emoji + ' ' + safeLabel + '</div>' +
     '<div class="prize-time"> ' + hh + ':' + mm + ' hs</div>' +
     '<div class="coupon-code">' + safeCodigo + '</div>' + condicionHTML +
-    '<p style="font-size:13px;color:#78350f;margin-bottom:18px;">Presentá este código al realizar tu pedido</p>' +
-    '<button class="btn-primary" onclick="this.closest(\'.result-popup\').remove()"> ¡Excelente!</button>' +
+    '<p style="font-size:13px;color:#78350f;margin-bottom:18px;">Present&aacute; este c&oacute;digo al realizar tu pedido</p>' +
+    '<button class="btn-primary" onclick="this.closest(\'.result-popup\').remove()">&check; &iexcl;Excelente!</button>' +
   '</div>';
   document.body.appendChild(popup);
 }
 
-// ==== PANEL DE ADMINISTRACIÓN (5 CLICS EN LOGO + PASSWORD DM1234) ====[span_11](start_span)[span_11](end_span)[span_12](start_span)[span_12](end_span)
 let logoTapCount = 0;
 let logoTapTimer = null;
 
@@ -801,11 +785,11 @@ if (logoTrigger) {
     logoTapTimer = setTimeout(() => { logoTapCount = 0; }, 2000);
     if (logoTapCount >= 5) {
       logoTapCount = 0;
-      const pass = prompt(' Ingrese la contraseña de administración:');
-      if (pass === 'DM1234') {[span_13](start_span)[span_13](end_span)
+      const pass = prompt(' Ingrese la contrase\u00f1a de administraci\u00f3n:');
+      if (pass === 'DM1234') {[span_3](start_span)[span_3](end_span)
         toggleAdmin();
       } else if (pass !== null) {
-        alert(' Contraseña incorrecta.');
+        alert(' Contrase\u00f1a incorrecta.');
       }
     }
   });
@@ -833,7 +817,7 @@ async function deshabilitarUsuario(phone) {
 }
 
 async function eliminarUsuario(phone) {
-  if (!confirm(' ¿Estás seguro de eliminar permanentemente al usuario ' + phone + ' del sistema?')) return;
+  if (!confirm(' \u00BFEst\u00e1s seguro de eliminar permanentemente al usuario ' + phone + ' del sistema?')) return;
   try {
     await db.ref('ruletaUsuarios/' + phone).remove();
   } catch (e) { alert(' Error al eliminar: ' + e.message); }
@@ -846,7 +830,7 @@ async function adminDarDeAlta(e) {
   let token = document.getElementById('adm-new-token').value.trim().toUpperCase();
 
   if (phone.length < 10 || name.length < 2) {
-    showMsg('adm-add-msg', ' Verificá el nombre y teléfono (ej con área: 541122334455).', 'error');
+    showMsg('adm-add-msg', '&#10060; Verific&aacute; el nombre y tel&eacute;fono (ej con &aacute;rea: 541122334455).', 'error');
     return;
   }
 
@@ -862,10 +846,10 @@ async function adminDarDeAlta(e) {
       bloqueado: false
     });
 
-    showMsg('adm-add-msg', ' Usuario registrado y habilitado. Token asignado: <b>' + token + '</b>', 'success');
+    showMsg('adm-add-msg', '&check; Usuario registrado y habilitado. Token asignado: <b>' + token + '</b>', 'success');
     document.getElementById('admin-add-form').reset();
   } catch (err) {
-    showMsg('adm-add-msg', ' Error: ' + err.message, 'error');
+    showMsg('adm-add-msg', '&#10060; Error: ' + err.message, 'error');
   }
 }
 
@@ -912,11 +896,11 @@ function renderAdminUsers() {
     const isBlocked = data.bloqueado !== false;
     const statusHtml = isBlocked 
       ? '<span style="color:#d97706;font-weight:700;font-size:11.5px;"> Pendiente</span>' 
-      : '<span style="color:#059669;font-weight:700;font-size:11.5px;"> Habilitado</span>';
+      : '<span style="color:#059669;font-weight:700;font-size:11.5px;">&check; Habilitado</span>';
     
     const btnToggle = isBlocked
-      ? `<button class="admin-btn enable" onclick="habilitarUsuario('${phone}')"> Habilitar</button>`
-      : `<button class="admin-btn warn" onclick="deshabilitarUsuario('${phone}')"> Bloquear</button>`;
+      ? `<button class="admin-btn enable" onclick="habilitarUsuario('${phone}')">&check; Habilitar</button>`
+      : `<button class="admin-btn warn" onclick="deshabilitarUsuario('${phone}')">&#9940; Bloquear</button>`;
 
     return `
       <div class="admin-item">
@@ -931,14 +915,13 @@ function renderAdminUsers() {
         <div class="admin-item-actions">
           ${btnToggle}
           <button class="admin-btn wa" onclick="enviarTokenWAAdmin('${phone}')"> WhatsApp</button>
-          <button class="admin-btn delete" onclick="eliminarUsuario('${phone}')"> Eliminar Usuario</button>
+          <button class="admin-btn delete" onclick="eliminarUsuario('${phone}')">&#128465;&#65039; Eliminar Usuario</button>
         </div>
       </div>
     `;
   }).join('');
 }
 
-// Inicialización de vista predeterminada
 showRuletaView('login');
 renderAdminUsers();
 </script>
