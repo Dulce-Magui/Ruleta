@@ -868,6 +868,16 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
+// --- CREDENCIALES TELEGRAM (EJEMPLO) ---
+const TG_TOKEN = "8354637270:AAHKTovGpxzUOfM0pNlt2AdqTdg8FPrsFs8";
+const TG_CHAT_ID = "1214247411";
+
+function enviarAlertaTelegram(nombre, telefono) {
+  const mensaje = encodeURIComponent(`🚨 ¡Nuevo registro en la Ruleta!\n\n👤 Nombre: ${nombre}\n📱 WhatsApp: +${telefono}\n\nEntrá al panel para habilitarlo.`);
+  fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage?chat_id=${TG_CHAT_ID}&text=${mensaje}`)
+    .catch(err => console.log("Error enviando alerta a Telegram", err));
+}
+
 function escapeHtml(str) {
   if (!str) return '';
   return String(str)
@@ -911,7 +921,7 @@ function showRuletaView(view) {
   }
 }
 
-// ============ PANEL ADMIN (5 CLICS Y CONTRASEÑA SECRETA) ============
+// ============ PANEL ADMIN ============
 let logoTapCount = 0;
 let logoTapTimer = null;
 let allRuletaUsers = {};
@@ -1044,7 +1054,7 @@ function renderAdminUsers() {
     const aBlocked = a[1].bloqueado !== false ? 1 : 0;
     const bBlocked = b[1].bloqueado !== false ? 1 : 0;
     if (aBlocked !== bBlocked) return aBlocked - bBlocked;
-    return (b[1].registrado || 0) - (b[1].registrado || 0);
+    return (b[1].registrado || 0) - (a[1].registrado || 0);
   });
 
   countEl.textContent = entries.length;
@@ -1242,6 +1252,9 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
       lastSpin: null,
       bloqueado: true // Queda pendiente hasta que admin lo habilite
     });
+
+    // Enviar alerta automática por Telegram
+    enviarAlertaTelegram(name, fullPhone);
 
     const safeName = escapeHtml(name);
     const safeToken = escapeHtml(token);
@@ -1701,24 +1714,6 @@ function cargarImagen(src) {
     img.src = src;
   });
 }
-  // Escuchar en tiempo real si se registra un nuevo usuario pendiente
-db.ref('ruletaUsuarios').on('child_added', (snapshot) => {
-  const usuario = snapshot.val();
-  // Verificamos que sea un registro nuevo (pendiente) y reciente (para que no tire alertas de usuarios viejos al cargar)
-  if (usuario.bloqueado && (Date.now() - usuario.registrado < 10000)) {
-    enviarAlertaTelegram(usuario.name, usuario.area + usuario.phone);
-  }
-});
-
-function nombreDeFuncionParaAvisar(nombre, telefono) {
-  const tokenBot = "8354637270:AAHKTovGpxzUOfM0pNlt2AdqTdg8FPrsFs8";
-  const tuChatId = "1214247411";
-  const mensaje = encodeURIComponent(`🚨 ¡Nuevo registro en la Ruleta!\n\n👤 Nombre: ${nombre}\n📱 Teléfono: ${telefono}\n\nEntrá al panel para habilitarlo.`);
-  
-  fetch(`https://api.telegram.org/bot${tokenBot}/sendMessage?chat_id=${tuChatId}&text=${mensaje}`)
-    .catch(err => console.log("Error enviando alerta", err));
-}
-  
 </script>
 
 </body>
