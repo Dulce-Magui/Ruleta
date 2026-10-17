@@ -1529,60 +1529,165 @@ function showResultPopup(name, prize, hh, mm, codigo) {
   const safeLabel = escapeHtml(prize.label);
   const safeCodigo = escapeHtml(codigo);
 
-  // Mensaje preconfigurado para WhatsApp indicando el premio y código
-  const mensajeWA = encodeURIComponent(
-    `¡Hola Dulce Magui! 🎡 Gané "${safeLabel}" en la ruleta con el código *${safeCodigo}*. Te envío mi comprobante / etiqueta para validar el descuento. ✨`
-  );
-
   popup.innerHTML =
-    '<div class="result-popup-content" style="max-width: 440px; text-align: left;">' +
-      '<div style="text-align: center;">' +
-        '<div class="congrats">🎉 ¡FELICITACIONES! 🎉</div>' +
-        '<div class="winner-name">' + safeName + '</div>' +
-        '<div style="color:#92400e; margin-top:4px; font-weight:600;">has ganado</div>' +
-        '<div class="prize-won">' + prize.emoji + ' ' + safeLabel + '</div>' +
-        '<div class="prize-time">🕐 ' + hh + ':' + mm + ' hs</div>' +
-        '<div class="coupon-code">' + safeCodigo + '</div>' +
-      '</div>' +
-
-      '<div style="background:#fffbeb; padding:12px; border-radius:10px; border:1px dashed #d97706; margin-top:14px; font-size:12.5px; color:#78350f;">' +
+    '<div class="result-popup-content" style="max-width: 440px; text-align: center;">' +
+      '<div class="congrats">🎉 ¡FELICITACIONES! 🎉</div>' +
+      '<div class="winner-name">' + safeName + '</div>' +
+      '<div style="color:#92400e; margin: 4px 0;">has ganado</div>' +
+      '<div class="prize-won">' + prize.emoji + ' ' + safeLabel + '</div>' +
+      '<div class="prize-time" style="margin-bottom: 15px;">🕐 ' + hh + ':' + mm + ' hs</div>' +
+      
+      '<div style="background:#fffbeb; padding:12px; border-radius:10px; border:1px dashed #d97706; margin-bottom:15px; font-size:12px; color:#78350f; text-align: left;">' +
         '<p style="font-weight:700; margin-bottom:6px; text-align:center;">Descuento exclusivo para compras superiores a $ 10,000 pesos argentinos</p>' +
-        
-        '<p style="font-weight:700; margin-top:8px; margin-bottom:4px; border-bottom:1px solid #f3d2e0; padding-bottom:2px;">Lista de precios (aplica el descuento):</p>' +
-        '<ul style="margin-left: 16px; font-size:12px; line-height: 1.4;">' +
+        '<p style="font-weight:700; margin-top:6px; margin-bottom:4px; border-bottom:1px solid #f3d2e0; padding-bottom:2px;">Lista de precios (aplica el descuento):</p>' +
+        '<ul style="margin-left: 16px; line-height: 1.3;">' +
           '<li>Porciones individuales: 4500 c/u</li>' +
           '<li>Torta mediana: 40000</li>' +
           '<li>Torta grande: 50000</li>' +
           '<li>Shots: 2200 c/u</li>' +
         '</ul>' +
-
-        '<p style="margin-top:8px; font-size:11.5px; font-style:italic; text-align:center; opacity:0.9;">No acumulable. El descuento no aplica sobre otras promociones.</p>' +
+        '<p style="margin-top:6px; font-size:11px; font-style:italic; text-align:center; opacity:0.9;">No acumulable. El descuento no aplica sobre otras promociones.</p>' +
       '</div>' +
 
-      '<p style="font-size:12px; color:#78350f; margin:14px 0 8px; text-align:center; font-weight:bold;">Para validar tu descuento, elegí una opción:</p>' +
+      '<p style="font-size:13px; color:#78350f; margin-bottom:15px; font-weight:bold;">Para hacer válido tu premio, generá tu imagen de ganadora y compartila o envianos el comprobante.</p>' +
       
-      // Botón 1: Enviar por WhatsApp con el mensaje listo
-      '<a href="https://wa.me/541168911377?text=' + mensajeWA + '" target="_blank" class="btn-primary btn-wa" style="display:block; text-align:center; text-decoration:none; margin-bottom:8px; padding:12px;">📱 Enviar comprobante por WhatsApp</a>' +
-      
-      // Botón 2: Ir a Instagram para etiquetar
-      '<a href="https://instagram.com/tortas.dulcemagui" target="_blank" class="btn-primary" style="display:block; text-align:center; text-decoration:none; background:linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); margin-bottom:8px; padding:12px;">📸 Etiquetarnos en Instagram</a>' +
+      // Botón principal que genera la tarjeta con todo el esfuerzo visual y de texto
+      '<button class="btn-primary btn-wa" onclick="generarYCompartirImagen(\'' + prize.emoji + '\', \'' + safeLabel + '\', \'' + safeName + '\', \'' + safeCodigo + '\')" style="margin-bottom:10px; padding:12px;">📸 Generar Imagen y Compartir</button>' +
 
-      '<button class="btn-secondary" onclick="this.closest(\'.result-popup\').remove()" style="margin-top:0;">Cerrar ventana</button>' +
+      '<button class="btn-secondary" onclick="this.closest(\'.result-popup\'].remove()">Cerrar</button>' +
     '</div>';
 
   document.body.appendChild(popup);
+}
 
-  // Efecto de papel picado (confeti) al ganar
-  for (let i = 0; i < 40; i++) {
-    const confetti = document.createElement('div');
-    confetti.className = 'confetti';
-    confetti.style.left = Math.random() * 100 + 'vw';
-    confetti.style.background = ['#f472b6', '#fbbf24', '#34d399', '#60a5fa', '#a78bfa'][Math.floor(Math.random() * 5)];
-    confetti.style.animationDelay = Math.random() * 2 + 's';
-    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-    popup.appendChild(confetti);
+async function generarYCompartirImagen(emoji, premio, nombre, codigo) {
+  try {
+    const canvas = document.createElement('canvas');
+    const WIDTH = 1080;
+    const HEIGHT = 1350;
+
+    canvas.width = WIDTH;
+    canvas.height = HEIGHT;
+    const ctx = canvas.getContext('2d');
+
+    // Fondo degradado elegante
+    const grad = ctx.createLinearGradient(0, 0, WIDTH, HEIGHT);
+    grad.addColorStop(0, '#fff5f7');
+    grad.addColorStop(0.5, '#fce7f3');
+    grad.addColorStop(1, '#fbcfe8');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, WIDTH, HEIGHT);
+
+    // Marcos decorativos
+    ctx.strokeStyle = '#ec4899';
+    ctx.lineWidth = 12;
+    ctx.strokeRect(30, 30, WIDTH - 60, HEIGHT - 60);
+
+    ctx.strokeStyle = '#fbbf24';
+    ctx.lineWidth = 4;
+    ctx.strokeRect(48, 48, WIDTH - 96, HEIGHT - 96);
+
+    // Encabezado de marca y título
+    ctx.fillStyle = '#be185d';
+    ctx.font = 'bold 44px Segoe UI, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('🎡 DULCE MAGUI 🎡', WIDTH / 2, 110);
+
+    ctx.fillStyle = '#db2777';
+    ctx.font = 'bold 54px Segoe UI, sans-serif';
+    ctx.fillText('¡RULETA DE DESCUENTOS!', WIDTH / 2, 180);
+
+    // Premio obtenido
+    ctx.font = '90px serif';
+    ctx.fillText(emoji, WIDTH / 2, 280);
+
+    ctx.fillStyle = '#92400e';
+    ctx.font = 'bold 70px Segoe UI, sans-serif';
+    ctx.fillText(premio, WIDTH / 2, 360);
+
+    ctx.fillStyle = '#4a3038';
+    ctx.font = 'bold 38px Segoe UI, sans-serif';
+    ctx.fillText('Ganador/a: ' + nombre, WIDTH / 2, 420);
+
+    // Cuadro central con el Código y las Condiciones exigidas
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+    ctx.fillRect(90, 460, WIDTH - 180, 520);
+    ctx.strokeStyle = '#d97706';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(90, 460, WIDTH - 180, 520);
+
+    // Código del cupón dentro del cuadro
+    ctx.fillStyle = '#be185d';
+    ctx.font = 'bold 46px Courier New, monospace';
+    ctx.fillText('CÓDIGO: ' + codigo, WIDTH / 2, 530);
+
+    // Textos legales y lista de precios impresos en la imagen
+    ctx.fillStyle = '#78350f';
+    ctx.font = 'bold 24px Segoe UI, sans-serif';
+    ctx.fillText('Descuento exclusivo para compras > $ 10,000', WIDTH / 2, 585);
+
+    ctx.font = 'bold 22px Segoe UI, sans-serif';
+    ctx.fillText('Lista de precios (aplica el descuento):', WIDTH / 2, 630);
+
+    ctx.font = '20px Segoe UI, sans-serif';
+    ctx.fillText('• Porciones individuales: 4500 c/u   |   • Torta mediana: 40000', WIDTH / 2, 670);
+    ctx.fillText('• Torta grande: 50000   |   • Shots: 2200 c/u', WIDTH / 2, 710);
+
+    ctx.font = 'italic 18px Segoe UI, sans-serif';
+    ctx.fillStyle = '#92400e';
+    ctx.fillText('No acumulable. El descuento no aplica sobre otras promociones.', WIDTH / 2, 765);
+
+    ctx.fillStyle = '#4a3038';
+    ctx.font = 'bold 22px Segoe UI, sans-serif';
+    ctx.fillText('Válido etiquetándonos en Instagram o enviando este comprobante por WhatsApp.', WIDTH / 2, 850);
+    ctx.fillText('📸 @tortas.dulcemagui', WIDTH / 2, 895);
+
+    // Pie de imagen
+    ctx.fillStyle = '#8b5a6b';
+    ctx.font = '28px Segoe UI, sans-serif';
+    ctx.fillText('¡Presentá esta imagen para validar tu beneficio! ✨', WIDTH / 2, 1070);
+
+    canvas.toBlob(async (blob) => {
+      if (!blob) {
+        alert('❌ No se pudo generar la imagen');
+        return;
+      }
+
+      const archivo = new File([blob], 'premio-dulce-magui.png', { type: 'image/png' });
+
+      // Intenta abrir el menú nativo de compartir del celular para elegir WhatsApp o Instagram directo
+      if (navigator.canShare && navigator.canShare({ files: [archivo] })) {
+        try {
+          await navigator.share({
+            files: [archivo],
+            title: '¡Gané en la ruleta!',
+            text: '🎉 ¡Gané ' + premio + ' en la Ruleta de @tortas.dulcemagui! Aquí está mi comprobante con el código ' + codigo + ' ✨'
+          });
+          return;
+        } catch (e) {
+          // Si el usuario cancela el share nativo, no hacemos nada más
+        }
+      }
+
+      // Alternativa si el navegador no soporta el share de archivos: descarga directa para subir o enviar
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'premio-dulce-magui.png';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      alert('📸 ¡Imagen generada y descargada con éxito!\nEnviala por WhatsApp o subila a tus historias etiquetando a @tortas.dulcemagui para validar tu descuento.');
+    }, 'image/png');
+
+  } catch (error) {
+    console.error('Error al generar imagen:', error);
+    alert('❌ Error al generar la imagen: ' + error.message);
   }
 }
+
 
 
 
