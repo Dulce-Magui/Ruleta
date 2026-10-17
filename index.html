@@ -1701,6 +1701,24 @@ function cargarImagen(src) {
     img.src = src;
   });
 }
+  // Escuchar en tiempo real si se registra un nuevo usuario pendiente
+db.ref('ruletaUsuarios').on('child_added', (snapshot) => {
+  const usuario = snapshot.val();
+  // Verificamos que sea un registro nuevo (pendiente) y reciente (para que no tire alertas de usuarios viejos al cargar)
+  if (usuario.bloqueado && (Date.now() - usuario.registrado < 10000)) {
+    enviarAlertaTelegram(usuario.name, usuario.area + usuario.phone);
+  }
+});
+
+function nombreDeFuncionParaAvisar(nombre, telefono) {
+  const tokenBot = "8354637270:AAHKTovGpxzUOfM0pNlt2AdqTdg8FPrsFs8";
+  const tuChatId = "1214247411";
+  const mensaje = encodeURIComponent(`🚨 ¡Nuevo registro en la Ruleta!\n\n👤 Nombre: ${nombre}\n📱 Teléfono: ${telefono}\n\nEntrá al panel para habilitarlo.`);
+  
+  fetch(`https://api.telegram.org/bot${tokenBot}/sendMessage?chat_id=${tuChatId}&text=${mensaje}`)
+    .catch(err => console.log("Error enviando alerta", err));
+}
+  
 </script>
 
 </body>
